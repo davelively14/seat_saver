@@ -33,6 +33,7 @@ init =
   , { seatNo = 12, occupied = False }
   ]
 
+
 -- VIEW
 
 view : Model -> Html
