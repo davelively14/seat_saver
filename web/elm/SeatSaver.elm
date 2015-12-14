@@ -2,6 +2,7 @@ module SeatSaver where
 
 import Html exposing (..)
 import Html.Attributes exposing (class)
+import Html.Events exposing (onClick)
 import StartApp.Simple
 
 main : Signal Html
@@ -47,7 +48,15 @@ view address model =
 
 seatItem : Signal.Address Action -> Seat -> Html
 seatItem address seat =
-  li [ class "seat available" ] [ text (toString seat.seatNo) ]
+  let
+    occupiedClass =
+      if seat.occupied then "occupied" else "available"
+  in
+    li
+      [ class ("seat " ++ occupiedClass)
+      , onClick address (Toggle seat)
+      ]
+      [ text (toString seat.seatNo) ]
 
 -- UPDATE
 
