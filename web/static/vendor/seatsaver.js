@@ -10220,6 +10220,39 @@ Elm.Html.Attributes.make = function (_elm) {
                                         ,property: property
                                         ,attribute: attribute};
 };
+Elm.StartApp = Elm.StartApp || {};
+Elm.StartApp.Simple = Elm.StartApp.Simple || {};
+Elm.StartApp.Simple.make = function (_elm) {
+   "use strict";
+   _elm.StartApp = _elm.StartApp || {};
+   _elm.StartApp.Simple = _elm.StartApp.Simple || {};
+   if (_elm.StartApp.Simple.values) return _elm.StartApp.Simple.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var _op = {};
+   var start = function (config) {
+      var update = F2(function (maybeAction,model) {
+         var _p0 = maybeAction;
+         if (_p0.ctor === "Just") {
+               return A2(config.update,_p0._0,model);
+            } else {
+               return _U.crashCase("StartApp.Simple",{start: {line: 91,column: 7},end: {line: 96,column: 52}},_p0)("This should never happen.");
+            }
+      });
+      var actions = $Signal.mailbox($Maybe.Nothing);
+      var address = A2($Signal.forwardTo,actions.address,$Maybe.Just);
+      var model = A3($Signal.foldp,update,config.model,actions.signal);
+      return A2($Signal.map,config.view(address),model);
+   };
+   var Config = F3(function (a,b,c) {    return {model: a,view: b,update: c};});
+   return _elm.StartApp.Simple.values = {_op: _op,Config: Config,start: start};
+};
 Elm.SeatSaver = Elm.SeatSaver || {};
 Elm.SeatSaver.make = function (_elm) {
    "use strict";
@@ -10235,6 +10268,14 @@ Elm.SeatSaver.make = function (_elm) {
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm);
    var _op = {};
+   var update = F2(function (action,model) {
+      var _p0 = action;
+      var updateSeat = function (seatFromModel) {
+         return _U.eq(seatFromModel.seatNo,_p0._0.seatNo) ? _U.update(seatFromModel,{occupied: $Basics.not(seatFromModel.occupied)}) : seatFromModel;
+      };
+      return A2($List.map,updateSeat,model);
+   });
+   var Toggle = function (a) {    return {ctor: "Toggle",_0: a};};
    var seatItem = function (seat) {
       return A2($Html.li,_U.list([$Html$Attributes.$class("seat available")]),_U.list([$Html.text($Basics.toString(seat.seatNo))]));
    };
@@ -10253,5 +10294,5 @@ Elm.SeatSaver.make = function (_elm) {
                       ,{seatNo: 12,occupied: false}]);
    var Seat = F2(function (a,b) {    return {seatNo: a,occupied: b};});
    var main = view(init);
-   return _elm.SeatSaver.values = {_op: _op,main: main,Seat: Seat,init: init,view: view,seatItem: seatItem};
+   return _elm.SeatSaver.values = {_op: _op,main: main,Seat: Seat,init: init,view: view,seatItem: seatItem,Toggle: Toggle,update: update};
 };

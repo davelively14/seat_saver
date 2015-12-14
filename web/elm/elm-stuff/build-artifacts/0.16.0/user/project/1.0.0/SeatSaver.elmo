@@ -13,6 +13,14 @@ Elm.SeatSaver.make = function (_elm) {
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm);
    var _op = {};
+   var update = F2(function (action,model) {
+      var _p0 = action;
+      var updateSeat = function (seatFromModel) {
+         return _U.eq(seatFromModel.seatNo,_p0._0.seatNo) ? _U.update(seatFromModel,{occupied: $Basics.not(seatFromModel.occupied)}) : seatFromModel;
+      };
+      return A2($List.map,updateSeat,model);
+   });
+   var Toggle = function (a) {    return {ctor: "Toggle",_0: a};};
    var seatItem = function (seat) {
       return A2($Html.li,_U.list([$Html$Attributes.$class("seat available")]),_U.list([$Html.text($Basics.toString(seat.seatNo))]));
    };
@@ -31,5 +39,5 @@ Elm.SeatSaver.make = function (_elm) {
                       ,{seatNo: 12,occupied: false}]);
    var Seat = F2(function (a,b) {    return {seatNo: a,occupied: b};});
    var main = view(init);
-   return _elm.SeatSaver.values = {_op: _op,main: main,Seat: Seat,init: init,view: view,seatItem: seatItem};
+   return _elm.SeatSaver.values = {_op: _op,main: main,Seat: Seat,init: init,view: view,seatItem: seatItem,Toggle: Toggle,update: update};
 };
