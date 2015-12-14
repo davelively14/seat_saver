@@ -41,12 +41,12 @@ init =
 
 -- VIEW
 
-view : Model -> Html
-view model =
-  ul [ class "seats" ] (List.map seatItem model)
+view : Signal.Address Action -> Model -> Html
+view address model =
+  ul [ class "seats" ] (List.map (seatItem address) model)
 
-seatItem : Seat -> Html
-seatItem seat =
+seatItem : Signal.Address Action -> Seat -> Html
+seatItem address seat =
   li [ class "seat available" ] [ text (toString seat.seatNo) ]
 
 -- UPDATE
